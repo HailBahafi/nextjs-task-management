@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.outline-width-2 {
+    outline: 1px solid transparent; 
+  }
+
+  .outline-width-2:focus {
+    outline-color: #4338ca;
+  }
