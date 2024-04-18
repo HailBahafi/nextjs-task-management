@@ -31,9 +31,9 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete }) => {
 
   // Define importance options for dropdown (urgency)
   const importanceOptions = [
-    { value: 1, label: "Completed" },
+    { value: 1, label: "Pending" },
     { value: 2, label: "In Progress" },
-    { value: 3, label: "Pending" },
+    { value: 3, label: "Completed" },
   ];
 
   // Function to handle edit State
