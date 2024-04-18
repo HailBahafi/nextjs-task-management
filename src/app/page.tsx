@@ -43,9 +43,9 @@ export default function Home() {
 
   // Define importance options for dropdown (urgency)
   const importanceOptions = [
-    { value: 3, label: "Pending" },
+    { value: 1, label: "Pending" },
     { value: 2, label: "In Progress" },
-    { value: 1, label: "Completed" },
+    { value: 3, label: "Completed" },
   ];
 
   // Function to handle adding a new todo

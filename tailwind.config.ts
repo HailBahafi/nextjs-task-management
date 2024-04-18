@@ -9,14 +9,6 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        customBlue1: "#bde0fe",
-        customBlue2: "#00a6fb",
-        customBlue3: "#2563EB",
-        customBlue4: "#1E40AF",
-        customBlue5: "#00205b",
-        customBlue6: "#001233",
-      },
       backgroundImage: {},
     },
   },

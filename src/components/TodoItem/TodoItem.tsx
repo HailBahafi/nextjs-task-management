@@ -31,9 +31,9 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete }) => {
 
   // Define importance options for dropdown (urgency)
   const importanceOptions = [
-    { value: 3, label: "Pending" },
-    { value: 2, label: "In Progress" },
     { value: 1, label: "Completed" },
+    { value: 2, label: "In Progress" },
+    { value: 3, label: "Pending" },
   ];
 
   // Function to handle edit State
@@ -118,13 +118,13 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete }) => {
           </div>
           <div className="w-full gap-1 flex justify-between ">
             <button
-              className="bg-red-500 border border-black w-2/3 rounded-lg hover:bg-gray-200 text-white"
+              className="bg-red-500 border border-black w-2/3 rounded-lg hover:bg-red-700 text-white"
               onClick={handleCancelEdit}
             >
               Cancel
             </button>
             <button
-              className="border border-black w-2/3 rounded-lg hover:bg-gray-200 bg-blue-500 text-white"
+              className="border border-black w-2/3 rounded-lg hover:bg-indigo-700 bg-indigo-500 text-white"
               type="submit"
             >
               Save
@@ -163,13 +163,13 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete }) => {
             </div>          </div>
           <div className="w-full gap-1 flex justify-between">
             <button
-              className="bg-red-500 border border-black w-2/3 rounded-lg hover:bg-gray-200 text-white"
+              className="bg-red-500 border border-black w-2/3 rounded-lg hover:bg-red-700 text-white"
               onClick={() => onDelete(todo.id)}
             >
               Delete
             </button>
             <button
-              className="border border-black w-2/3 rounded-lg hover:bg-gray-200 bg-blue-500 text-white"
+              className="border border-black w-2/3 rounded-lg hover:bg-indigo-700 bg-indigo-500 text-white"
               onClick={handleEditTodo}
             >
               Edit
