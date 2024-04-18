@@ -18,8 +18,9 @@ import Filter from "@/components/Filter/Filter";
 //Images & Types
 import Todo from "@/types";
 import ThemeToggle from "@/components/ThemeToggle/ThemeToggle";
-import { useTheme } from "next-themes";
-
+import { useState } from "react";
+import { Listbox } from '@headlessui/react';
+import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 // Main component
 export default function Home() {
   // Initialize Redux dispatch
@@ -42,17 +43,19 @@ export default function Home() {
   } = useForm<Todo>();
 
   // Define importance options for dropdown (urgency)
-  const importanceOptions = [
-    { value: 1, label: "Pending" },
-    { value: 2, label: "In Progress" },
-    { value: 3, label: "Completed" },
+  const statusOptions = [
+    { value: 1, label: 'Pending' },
+    { value: 2, label: 'In Progress' },
+    { value: 3, label: 'Completed' },
   ];
+  const [selectedStatus, setSelectedStatus] = useState(statusOptions[0]);
 
   // Function to handle adding a new todo
-  const handleAddTodo = (data: Todo) => {
+  const handleAddTodo = (data: Omit<Todo, 'importance' | 'id'>) => {
     const newTodo: Todo = {
       ...data,
-      importance: Number(data.importance),
+      // Use the selected status value for the importance field
+      importance: selectedStatus.value,
       id: uuidv4(),
     };
     dispatch(addTodo(newTodo)); // Dispatch - Create a new Todo
@@ -61,15 +64,13 @@ export default function Home() {
     dispatch(setSearchTerm(""));
     dispatch(filterAndSearchTodos());
     reset();
+    setSelectedStatus(statusOptions[0]); // Reset the selected status as well
   };
 
   // Function to handle deleting a todo
   const handleDeleteTodo = (id: string) => {
     dispatch(deleteTodo(id)); // Dispatch - Delete a Todo
   };
-
-  //Theme
-  const { theme } = useTheme();
 
   return (
     <main
@@ -86,7 +87,7 @@ export default function Home() {
             >
               <div className="w-full flex justify-between">
                 <h1 className="mb-6 font-bold uppercase text-xl text-customBlue5 dark:text-white">
-                Add a new Task 
+                  Add a new Task
                 </h1>
                 <ThemeToggle />
               </div>
@@ -111,7 +112,7 @@ export default function Home() {
               </div>
               {/* Description */}
               <div className="w-full h-fit">
-              <label className="block pb-2 font-medium text-lg">Description</label>
+                <label className="block pb-2 font-medium text-lg">Description</label>
                 <textarea
                   className="outline-width-2 rounded-md w-full border dark:border-gray-100 dark:bg-[#2b2c37] dark:bg-opacity-80 p-2"
                   {...register("description", {
@@ -127,23 +128,45 @@ export default function Home() {
                 )}
               </div>
               {/* Importance */}
-              <div className="w-full">
+              <div className="w-full relative">
                 <label className="block pb-2 font-medium text-lg">Status</label>
-                <select
-                  className="outline-width-2 w-full rounded-md border mb-2 p-2 dark:border-gray-100 dark:bg-[#2b2c37] dark:bg-opacity-80"
-                  {...register("importance", {
-                    required: "La urgencia es requerida.",
-                  })}
-                >
-                  {importanceOptions.map((option) => (
-                    <option key={option.value} value={option.value} className="w-40">
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                {errors.importance && (
-                  <p className="text-red-500">{errors.importance.message}</p>
-                )}
+                <Listbox value={selectedStatus} onChange={setSelectedStatus}>
+                  {({ open }) => (
+                    <>
+                      <Listbox.Button className="outline-width-2 w-full rounded-md border p-2 dark:border-gray-100 dark:bg-[#2b2c37]">
+                        <span className="block truncate">{selectedStatus.label}</span>
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                          <SelectorIcon className="w-5 h-5 mt-8 text-gray-400" aria-hidden="true" />
+                        </span>
+                      </Listbox.Button>
+                      <Listbox.Options className="absolute z-10 mt-1 w-full rounded-md bg-white dark:bg-gray-200 shadow-lg max-h-60 overflow-auto focus:outline-none">
+                        {statusOptions.map((option) => (
+                          <Listbox.Option
+                            key={option.value}
+                            value={option}
+                            className={({ active }) =>
+                              `cursor-default select-none relative py-2 pl-10 pr-4 ${active ? 'bg-indigo-100 text-indigo-900' : 'text-gray-900'
+                              }`
+                            }
+                          >
+                            {({ selected }) => (
+                              <>
+                                <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
+                                  {option.label}
+                                </span>
+                                {selected ? (
+                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <CheckIcon className="w-5 h-5" aria-hidden="true" />
+                                  </span>
+                                ) : null}
+                              </>
+                            )}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </>
+                  )}
+                </Listbox>
               </div>
               <button
                 className="w-full border rounded-lg p-2 text-md mt-2 border-customBlue4 bg-indigo-500 hover:bg-indigo-700 font-bold text-white"

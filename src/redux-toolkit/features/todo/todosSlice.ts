@@ -14,7 +14,6 @@ const todoSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    //CRUD
     addTodo: (state, action: PayloadAction<Todo>) => {
       state.todos.push(action.payload);
     },
